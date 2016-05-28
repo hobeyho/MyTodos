@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -47,6 +48,35 @@ public class TodoActivity extends ListActivity {
                 addNewTodo();
             }
         });
+    }
+
+    protected void onListItemClick(ListView l, View v, final int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        LogLibrary.print(position);
+        String work = todo_list.get(position);
+        LogLibrary.print(work);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(work);
+        builder.setMessage("이 일이 다 끝났나요?");
+
+        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //할일을 여기서 지워주자
+                todo_list.remove(position);
+                LogLibrary.printEach(todo_list); //LogLibrary 를 활용해 ArrayList 를 간단히 프린트 해 보자
+                populateListview();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 
     //open alert dialog to create a new todo
