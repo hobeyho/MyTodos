@@ -87,7 +87,7 @@ public class TodoActivity extends ListActivity {
         builder.setMessage("할 일을 추가해 보세요");
 
         final EditText todo_input = new EditText(this);
-        todo_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        todo_input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(todo_input);
 
         // Set up the buttons
