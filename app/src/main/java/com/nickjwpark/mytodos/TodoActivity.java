@@ -2,8 +2,10 @@ package com.nickjwpark.mytodos;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +26,8 @@ public class TodoActivity extends ListActivity {
     Button btnAdd;
     ArrayList<String> todo_list;
 
+    SharedPreferences sharedPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +43,10 @@ public class TodoActivity extends ListActivity {
         }
         textViewGreeting.setText("" + id + "의 할일들");
 
+
+        sharedPref = this.getSharedPreferences("com.nickjwpark.mytodos", Context.MODE_PRIVATE);
         todo_list = new ArrayList<String>();
+        loadArrayList();
         populateListview();
 
         btnAdd.setOnClickListener(new View.OnClickListener(){
@@ -115,5 +122,28 @@ public class TodoActivity extends ListActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, todo_list);
         setListAdapter(adapter);
+        saveArrayList();
+    }
+
+    public void saveArrayList(){
+        String todo_str = "";
+        for(String todo : todo_list){
+            todo_str = todo_str + todo + "&&&";
+            LogLibrary.print(todo_str);
+        }
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("todo", todo_str);
+        editor.commit();
+    }
+
+    public void loadArrayList(){
+        String defaultValue = "";
+        String todo = sharedPref.getString("todo", defaultValue);
+        String [] todo_arr = todo.split("&&&");
+        LogLibrary.printEach(todo_arr);
+        for(String work : todo_arr){
+            todo_list.add(work);
+        }
+        LogLibrary.printEach(todo_list);
     }
 }
