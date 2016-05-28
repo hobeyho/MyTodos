@@ -39,12 +39,7 @@ public class TodoActivity extends ListActivity {
         textViewGreeting.setText("" + id + "의 할일들");
 
         todo_list = new ArrayList<String>();
-        todo_list.add("todo1");
-        todo_list.add("todo2");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, todo_list);
-        setListAdapter(adapter);
-
+        populateListview();
 
         btnAdd.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -70,6 +65,10 @@ public class TodoActivity extends ListActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //할일을 여기서 저장하자
+                String input = todo_input.getText().toString();
+                todo_list.add(input);
+                LogLibrary.printEach(todo_list); //LogLibrary 를 활용해 ArrayList 를 간단히 프린트 해 보자
+                populateListview();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -81,5 +80,10 @@ public class TodoActivity extends ListActivity {
 
         builder.show();
     }
-}
 
+    public void populateListview(){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, todo_list);
+        setListAdapter(adapter);
+    }
+}
