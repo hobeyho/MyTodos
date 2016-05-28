@@ -43,17 +43,18 @@ public class MainActivity extends AppCompatActivity {
                 } else if(!password.equals(inputPassword)){
                     toast("비밀번호가 일치하지 않습니다");
                 } else {
-                    startTodoActivity();
+                    startTodoActivity(id);
                 }
             }
         });
     }
 
     //start TodoActivity
-    public void startTodoActivity(){
+    public void startTodoActivity(String id){
         Activity fromActivity = MainActivity.this;
         Class toActivity = TodoActivity.class;
         Intent intent = new Intent(fromActivity, toActivity);
+        intent.putExtra("id", id);
         startActivity(intent);
     }
 
